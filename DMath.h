@@ -284,7 +284,6 @@ namespace DM
 		DirectX::XMFLOAT4X4 m_mat;
 	};
 
-
 	struct Vec2f
 	{
 	public:
@@ -432,6 +431,70 @@ namespace DM
 			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadFloat2(&m_vec)));
 
 			return product;
+		}
+
+		Vec2f operator*(float m)
+		{
+			Vec2f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			return product;
+		}
+
+		Vec2f operator*(int m)
+		{
+			Vec2f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			return product;
+		}
+
+		Vec2f & operator*=(float m)
+		{
+			Store(DirectX::XMVectorScale(Load(), m));
+
+			return *this;
+		}
+
+		Vec2f & operator*=(int m)
+		{
+			Store(DirectX::XMVectorScale(Load(), m));
+
+			return *this;
+		}
+
+		Vec2f operator/(float m)
+		{
+			Vec2f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / m));
+
+			return product;
+		}
+
+		Vec2f operator/(int m)
+		{
+			Vec2f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			return product;
+		}
+
+		Vec2f & operator/=(float m)
+		{
+			Store(DirectX::XMVectorScale(Load(), 1.0f / m));
+
+			return *this;
+		}
+
+		Vec2f & operator/=(int m)
+		{
+			Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			return *this;
 		}
 
 		Vec2f & operator+=(const Vec2f & _vec2f)
@@ -865,6 +928,70 @@ namespace DM
 			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadFloat3(&m_vec)));
 
 			return product;
+		}
+
+		Vec3f operator*(float m)
+		{
+			Vec3f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			return product;
+		}
+
+		Vec3f operator*(int m)
+		{
+			Vec3f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			return product;
+		}
+
+		Vec3f & operator*=(float m)
+		{
+			Store(DirectX::XMVectorScale(Load(), m));
+
+			return *this;
+		}
+
+		Vec3f & operator*=(int m)
+		{
+			Store(DirectX::XMVectorScale(Load(), m));
+
+			return *this;
+		}
+
+		Vec3f operator/(float m)
+		{
+			Vec3f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / m));
+
+			return product;
+		}
+
+		Vec3f operator/(int m)
+		{
+			Vec3f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			return product;
+		}
+
+		Vec3f & operator/=(float m)
+		{
+			Store(DirectX::XMVectorScale(Load(), 1.0f / m));
+
+			return *this;
+		}
+
+		Vec3f & operator/=(int m)
+		{
+			Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			return *this;
 		}
 
 		Vec3f & operator+=(const Vec3f & _Vec3f)
@@ -1302,6 +1429,70 @@ namespace DM
 			return product;
 		}
 
+		Vec4f operator*(float m)
+		{
+			Vec4f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			return product;
+		}
+
+		Vec4f operator*(int m)
+		{
+			Vec4f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			return product;
+		}
+
+		Vec4f & operator*=(float m)
+		{
+			Store(DirectX::XMVectorScale(Load(), m));
+
+			return *this;
+		}
+
+		Vec4f & operator*=(int m)
+		{
+			Store(DirectX::XMVectorScale(Load(), m));
+
+			return *this;
+		}
+
+		Vec4f operator/(float m)
+		{
+			Vec4f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / m));
+
+			return product;
+		}
+
+		Vec4f operator/(int m)
+		{
+			Vec4f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			return product;
+		}
+
+		Vec4f & operator/=(float m)
+		{
+			Store(DirectX::XMVectorScale(Load(), 1.0f / m));
+
+			return *this;
+		}
+
+		Vec4f & operator/=(int m)
+		{
+			Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			return *this;
+		}
+
 		Vec4f & operator+=(const Vec4f & _Vec4f)
 		{
 			*this = *this + _Vec4f;
@@ -1735,6 +1926,46 @@ namespace DM
 			return product;
 		}
 
+		Vec2i operator*(int m)
+		{
+			Vec2f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			return product.Round().AsXmInt2();
+		}
+
+		Vec2i & operator*=(int m)
+		{
+			Vec2f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			*this = product.Round().AsXmInt2();
+
+			return *this;
+		}
+
+		Vec2i operator/(int m)
+		{
+			Vec2f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			return product.Round().AsXmInt2();
+		}
+
+		Vec2i & operator/=(int m)
+		{
+			Vec2f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			*this = product.Round().AsXmInt2();
+
+			return *this;
+		}
+
 		Vec2i & operator+=(const Vec2i & _Vec2i)
 		{
 			*this = *this + _Vec2i;
@@ -2151,6 +2382,46 @@ namespace DM
 			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadSInt3(&m_vec)));
 
 			return product;
+		}
+
+		Vec3i operator*(int m)
+		{
+			Vec3f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			return product.Round().AsXmInt3();
+		}
+
+		Vec3i & operator*=(int m)
+		{
+			Vec3f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			*this = product.Round().AsXmInt3();
+
+			return *this;
+		}
+
+		Vec3i operator/(int m)
+		{
+			Vec3f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			return product.Round().AsXmInt3();
+		}
+
+		Vec3i & operator/=(int m)
+		{
+			Vec3f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			*this = product.Round().AsXmInt3();
+
+			return *this;
 		}
 
 		Vec3i & operator+=(const Vec3i & _Vec3i)
@@ -2573,6 +2844,46 @@ namespace DM
 			return product;
 		}
 
+		Vec4i operator*(int m)
+		{
+			Vec4f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			return product.Round().AsXmInt4();
+		}
+
+		Vec4i & operator*=(int m)
+		{
+			Vec4f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), m));
+
+			*this = product.Round().AsXmInt4();
+
+			return *this;
+		}
+
+		Vec4i operator/(int m)
+		{
+			Vec4f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			return product.Round().AsXmInt4();
+		}
+
+		Vec4i & operator/=(int m)
+		{
+			Vec4f product;
+
+			product.Store(DirectX::XMVectorScale(Load(), 1.0f / (float)m));
+
+			*this = product.Round().AsXmInt4();
+
+			return *this;
+		}
+
 		Vec4i & operator+=(const Vec4i & _Vec4i)
 		{
 			*this = *this + _Vec4i;
@@ -2780,7 +3091,7 @@ namespace DM
 				nor.Store(DirectX::XMVector4Normalize(Load()));
 			else
 			{
-				float _w = w;
+				int _w = w;
 				nor.Store(DirectX::XMVector3Normalize(Load()));
 				nor.w = _w;
 			}
