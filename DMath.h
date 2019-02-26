@@ -45,7 +45,7 @@ namespace DM
 
 			return val;
 		}
-		Mat3x3 operator*(const const DirectX::XMFLOAT3X3 & other)
+		Mat3x3 operator*(const DirectX::XMFLOAT3X3 & other)
 		{
 			Mat3x3 val;
 
@@ -182,7 +182,7 @@ namespace DM
 
 			return val;
 		}
-		Mat4x4 operator*(const const DirectX::XMFLOAT4X4 & other)
+		Mat4x4 operator*(const DirectX::XMFLOAT4X4 & other)
 		{
 			Mat4x4 val;
 
@@ -446,7 +446,7 @@ namespace DM
 		{
 			Vec2f product;
 
-			product.Store(DirectX::XMVectorScale(Load(), m));
+			product.Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			return product;
 		}
@@ -460,7 +460,7 @@ namespace DM
 
 		Vec2f & operator*=(int m)
 		{
-			Store(DirectX::XMVectorScale(Load(), m));
+			Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			return *this;
 		}
@@ -943,7 +943,7 @@ namespace DM
 		{
 			Vec3f product;
 
-			product.Store(DirectX::XMVectorScale(Load(), m));
+			product.Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			return product;
 		}
@@ -957,7 +957,7 @@ namespace DM
 
 		Vec3f & operator*=(int m)
 		{
-			Store(DirectX::XMVectorScale(Load(), m));
+			Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			return *this;
 		}
@@ -1442,7 +1442,7 @@ namespace DM
 		{
 			Vec4f product;
 
-			product.Store(DirectX::XMVectorScale(Load(), m));
+			product.Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			return product;
 		}
@@ -1456,7 +1456,7 @@ namespace DM
 
 		Vec4f & operator*=(int m)
 		{
-			Store(DirectX::XMVectorScale(Load(), m));
+			Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			return *this;
 		}
@@ -1930,7 +1930,7 @@ namespace DM
 		{
 			Vec2f product;
 
-			product.Store(DirectX::XMVectorScale(Load(), m));
+			product.Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			return product.Round().AsXmInt2();
 		}
@@ -1939,7 +1939,7 @@ namespace DM
 		{
 			Vec2f product;
 
-			product.Store(DirectX::XMVectorScale(Load(), m));
+			product.Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			*this = product.Round().AsXmInt2();
 
@@ -2388,7 +2388,7 @@ namespace DM
 		{
 			Vec3f product;
 
-			product.Store(DirectX::XMVectorScale(Load(), m));
+			product.Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			return product.Round().AsXmInt3();
 		}
@@ -2397,7 +2397,7 @@ namespace DM
 		{
 			Vec3f product;
 
-			product.Store(DirectX::XMVectorScale(Load(), m));
+			product.Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			*this = product.Round().AsXmInt3();
 
@@ -2848,7 +2848,7 @@ namespace DM
 		{
 			Vec4f product;
 
-			product.Store(DirectX::XMVectorScale(Load(), m));
+			product.Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			return product.Round().AsXmInt4();
 		}
@@ -2857,7 +2857,7 @@ namespace DM
 		{
 			Vec4f product;
 
-			product.Store(DirectX::XMVectorScale(Load(), m));
+			product.Store(DirectX::XMVectorScale(Load(), (float)m));
 
 			*this = product.Round().AsXmInt4();
 
@@ -3091,7 +3091,7 @@ namespace DM
 				nor.Store(DirectX::XMVector4Normalize(Load()));
 			else
 			{
-				int _w = w;
+				float _w = (float)w;
 				nor.Store(DirectX::XMVector3Normalize(Load()));
 				nor.w = _w;
 			}
