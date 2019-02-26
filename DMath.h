@@ -385,6 +385,13 @@ namespace DM
 			return val;
 		}
 
+		DirectX::XMFLOAT3 Cross(const Vec2f & _Vec2f)
+		{
+			DirectX::XMFLOAT3 val;
+			DirectX::XMStoreFloat3(&val, DirectX::XMVector3Cross(Load(), _Vec2f.Load()));
+			return val;
+		}
+
 		DirectX::XMFLOAT3 Cross(const DirectX::XMFLOAT3 & _xmFlt)
 		{
 			DirectX::XMFLOAT3 val;
@@ -1268,9 +1275,9 @@ namespace DM
 			return DirectX::XMVectorGetX(DirectX::XMVector3Dot(Load(), _Vec3f.Load()));
 		}
 
-		float Dot(const DirectX::XMFLOAT3 & _xmFlt)
+		float Dot(const DirectX::XMFLOAT4 & _xmFlt)
 		{
-			return DirectX::XMVectorGetX(DirectX::XMVector3Dot(Load(), DirectX::XMLoadFloat3(&_xmFlt)));
+			return DirectX::XMVectorGetX(DirectX::XMVector3Dot(Load(), DirectX::XMLoadFloat4(&_xmFlt)));
 		}
 
 		float Length() const
@@ -1310,9 +1317,9 @@ namespace DM
 			vec.y = _y;
 		}
 
-		Vec2i(const DirectX::XMINT2 & _xmFlt)
+		Vec2i(const DirectX::XMINT2 & _xmInt)
 		{
-			vec = _xmFlt;
+			vec = _xmInt;
 		}
 
 		Vec2i(const Vec2i & _vec2)
@@ -1334,9 +1341,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec2i & operator=(const DirectX::XMINT2 & _xmFlt)
+		Vec2i & operator=(const DirectX::XMINT2 & _xmInt)
 		{
-			vec = _xmFlt;
+			vec = _xmInt;
 
 			return *this;
 		}
@@ -1386,11 +1393,11 @@ namespace DM
 			return sum;
 		}
 
-		Vec2i operator+(const DirectX::XMINT2 & _xmFlt) const
+		Vec2i operator+(const DirectX::XMINT2 & _xmInt) const
 		{
 			Vec2i sum;
 
-			sum.Store(DirectX::XMVectorAdd(Load(), DirectX::XMLoadSInt2(&_xmFlt)));
+			sum.Store(DirectX::XMVectorAdd(Load(), DirectX::XMLoadSInt2(&_xmInt)));
 
 			return sum;
 		}
@@ -1404,11 +1411,11 @@ namespace DM
 			return sum;
 		}
 
-		Vec2i operator-(const DirectX::XMINT2 & _xmFlt) const
+		Vec2i operator-(const DirectX::XMINT2 & _xmInt) const
 		{
 			Vec2i sum;
 
-			sum.Store(DirectX::XMVectorSubtract(Load(), DirectX::XMLoadSInt2(&_xmFlt)));
+			sum.Store(DirectX::XMVectorSubtract(Load(), DirectX::XMLoadSInt2(&_xmInt)));
 
 			return sum;
 		}
@@ -1422,7 +1429,7 @@ namespace DM
 			return product;
 		}
 
-		Vec2i operator*(const DirectX::XMINT2 & _xmFlt) const
+		Vec2i operator*(const DirectX::XMINT2 & _xmInt) const
 		{
 			Vec2i product;
 
@@ -1440,7 +1447,7 @@ namespace DM
 			return product;
 		}
 
-		Vec2i operator/(const DirectX::XMINT2 & _xmFlt) const
+		Vec2i operator/(const DirectX::XMINT2 & _xmInt) const
 		{
 			Vec2i product;
 
@@ -1456,9 +1463,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec2i & operator+=(const DirectX::XMINT2 & _xmFlt)
+		Vec2i & operator+=(const DirectX::XMINT2 & _xmInt)
 		{
-			*this = *this + _xmFlt;
+			*this = *this + _xmInt;
 
 			return *this;
 		}
@@ -1477,9 +1484,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec2i & operator-=(const DirectX::XMINT2 & _xmFlt)
+		Vec2i & operator-=(const DirectX::XMINT2 & _xmInt)
 		{
-			*this = *this - _xmFlt;
+			*this = *this - _xmInt;
 
 			return *this;
 		}
@@ -1498,9 +1505,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec2i & operator*=(const DirectX::XMINT2 & _xmFlt)
+		Vec2i & operator*=(const DirectX::XMINT2 & _xmInt)
 		{
-			*this = *this * _xmFlt;
+			*this = *this * _xmInt;
 
 			return *this;
 		}
@@ -1519,9 +1526,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec2i & operator/=(const DirectX::XMINT2 & _xmFlt)
+		Vec2i & operator/=(const DirectX::XMINT2 & _xmInt)
 		{
-			*this = *this / _xmFlt;
+			*this = *this / _xmInt;
 
 			return *this;
 		}
@@ -1538,9 +1545,9 @@ namespace DM
 			return x == _Vec2i.x && y == _Vec2i.y;
 		}
 
-		bool operator==(const DirectX::XMINT2 & _xmFlt) const
+		bool operator==(const DirectX::XMINT2 & _xmInt) const
 		{
-			return x == _xmFlt.x && y == _xmFlt.y;
+			return x == _xmInt.x && y == _xmInt.y;
 		}
 
 		bool operator==(const DirectX::XMVECTOR & _xmVec) const
@@ -1556,21 +1563,24 @@ namespace DM
 #pragma endregion
 
 #pragma region Matrix Operators
-		Vec2f operator*(const DirectX::XMMATRIX & _matrix)
+		Vec2i operator*(const DirectX::XMMATRIX & _matrix)
 		{
 			Vec2f val;
+			Vec2i iVal;
 
 			val.Store(DirectX::XMVector2Transform(Load(), _matrix));
 
-			return val;
+			iVal = val.Round().AsXmInt2();
+
+			return iVal;
 		}
 
-		Vec2f operator*(const DirectX::XMFLOAT4X4 & _matrix)
+		Vec2i operator*(const DirectX::XMFLOAT4X4 & _matrix)
 		{
 			return *this * DirectX::XMLoadFloat4x4(&_matrix);
 		}
 
-		Vec2f operator*(const DirectX::XMFLOAT3X3 & _matrix)
+		Vec2i operator*(const DirectX::XMFLOAT3X3 & _matrix)
 		{
 			return *this * DirectX::XMLoadFloat3x3(&_matrix);
 		}
@@ -1657,6 +1667,39 @@ namespace DM
 			return nor;
 		}
 
+		DirectX::XMINT3 Cross(const DirectX::XMVECTOR & vector)
+		{
+			Vec3f fVal = AsXmFloat3();
+			return fVal.Cross(vector).Round().AsXmInt3();
+		}
+
+		DirectX::XMINT3 Cross(const Vec2i & _Vec2i)
+		{
+			Vec3f fVal = AsXmFloat3();
+			return fVal.Cross(_Vec2i.AsXmFloat3()).Round().AsXmInt3();
+		}
+
+		DirectX::XMINT3 Cross(const DirectX::XMINT3 & _xmInt)
+		{
+			Vec3f fVal = AsXmFloat3();
+			return fVal.Cross(DirectX::XMLoadSInt3(&_xmInt)).Round().AsXmInt3();
+		}
+
+		float Dot(const DirectX::XMVECTOR & vector)
+		{
+			return DirectX::XMVectorGetX(DirectX::XMVector2Dot(Load(), vector));
+		}
+
+		float Dot(const Vec2i & _Vec2i)
+		{
+			return DirectX::XMVectorGetX(DirectX::XMVector2Dot(Load(), _Vec2i.Load()));
+		}
+
+		float Dot(const DirectX::XMINT2 & _xmInt)
+		{
+			return DirectX::XMVectorGetX(DirectX::XMVector2Dot(Load(), DirectX::XMLoadSInt2(&_xmInt)));
+		}
+
 		float Length() const
 		{
 			return DirectX::XMVectorGetX(DirectX::XMVector2Length(Load()));
@@ -1692,9 +1735,9 @@ namespace DM
 			vec.z = _z;
 		}
 
-		Vec3i(const DirectX::XMINT3 & _xmFlt)
+		Vec3i(const DirectX::XMINT3 & _xmInt)
 		{
-			vec = _xmFlt;
+			vec = _xmInt;
 		}
 
 		Vec3i(const Vec3i & _vec2)
@@ -1716,9 +1759,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec3i & operator=(const DirectX::XMINT3 & _xmFlt)
+		Vec3i & operator=(const DirectX::XMINT3 & _xmInt)
 		{
-			vec = _xmFlt;
+			vec = _xmInt;
 
 			return *this;
 		}
@@ -1768,11 +1811,11 @@ namespace DM
 			return sum;
 		}
 
-		Vec3i operator+(const DirectX::XMINT3 & _xmFlt) const
+		Vec3i operator+(const DirectX::XMINT3 & _xmInt) const
 		{
 			Vec3i sum;
 
-			sum.Store(DirectX::XMVectorAdd(Load(), DirectX::XMLoadSInt3(&_xmFlt)));
+			sum.Store(DirectX::XMVectorAdd(Load(), DirectX::XMLoadSInt3(&_xmInt)));
 
 			return sum;
 		}
@@ -1786,11 +1829,11 @@ namespace DM
 			return sum;
 		}
 
-		Vec3i operator-(const DirectX::XMINT3 & _xmFlt) const
+		Vec3i operator-(const DirectX::XMINT3 & _xmInt) const
 		{
 			Vec3i sum;
 
-			sum.Store(DirectX::XMVectorSubtract(Load(), DirectX::XMLoadSInt3(&_xmFlt)));
+			sum.Store(DirectX::XMVectorSubtract(Load(), DirectX::XMLoadSInt3(&_xmInt)));
 
 			return sum;
 		}
@@ -1804,7 +1847,7 @@ namespace DM
 			return product;
 		}
 
-		Vec3i operator*(const DirectX::XMINT3 & _xmFlt) const
+		Vec3i operator*(const DirectX::XMINT3 & _xmInt) const
 		{
 			Vec3i product;
 
@@ -1822,7 +1865,7 @@ namespace DM
 			return product;
 		}
 
-		Vec3i operator/(const DirectX::XMINT3 & _xmFlt) const
+		Vec3i operator/(const DirectX::XMINT3 & _xmInt) const
 		{
 			Vec3i product;
 
@@ -1838,9 +1881,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec3i & operator+=(const DirectX::XMINT3 & _xmFlt)
+		Vec3i & operator+=(const DirectX::XMINT3 & _xmInt)
 		{
-			*this = *this + _xmFlt;
+			*this = *this + _xmInt;
 
 			return *this;
 		}
@@ -1859,9 +1902,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec3i & operator-=(const DirectX::XMINT3 & _xmFlt)
+		Vec3i & operator-=(const DirectX::XMINT3 & _xmInt)
 		{
-			*this = *this - _xmFlt;
+			*this = *this - _xmInt;
 
 			return *this;
 		}
@@ -1880,9 +1923,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec3i & operator*=(const DirectX::XMINT3 & _xmFlt)
+		Vec3i & operator*=(const DirectX::XMINT3 & _xmInt)
 		{
-			*this = *this * _xmFlt;
+			*this = *this * _xmInt;
 
 			return *this;
 		}
@@ -1901,9 +1944,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec3i & operator/=(const DirectX::XMINT3 & _xmFlt)
+		Vec3i & operator/=(const DirectX::XMINT3 & _xmInt)
 		{
-			*this = *this / _xmFlt;
+			*this = *this / _xmInt;
 
 			return *this;
 		}
@@ -1920,9 +1963,9 @@ namespace DM
 			return x == _Vec3i.x && y == _Vec3i.y;
 		}
 
-		bool operator==(const DirectX::XMINT3 & _xmFlt) const
+		bool operator==(const DirectX::XMINT3 & _xmInt) const
 		{
-			return x == _xmFlt.x && y == _xmFlt.y;
+			return x == _xmInt.x && y == _xmInt.y;
 		}
 
 		bool operator==(const DirectX::XMVECTOR & _xmVec) const
@@ -1938,21 +1981,24 @@ namespace DM
 #pragma endregion
 
 #pragma region Matrix Operators
-		Vec3f operator*(const DirectX::XMMATRIX & _matrix)
+		Vec3i operator*(const DirectX::XMMATRIX & _matrix)
 		{
 			Vec3f val;
+			Vec3i iVal;
 
 			val.Store(DirectX::XMVector2Transform(Load(), _matrix));
 
-			return val;
+			iVal = val.Round().AsXmInt3();
+
+			return iVal;
 		}
 
-		Vec3f operator*(const DirectX::XMFLOAT4X4 & _matrix)
+		Vec3i operator*(const DirectX::XMFLOAT4X4 & _matrix)
 		{
 			return *this * DirectX::XMLoadFloat4x4(&_matrix);
 		}
 
-		Vec3f operator*(const DirectX::XMFLOAT3X3 & _matrix)
+		Vec3i operator*(const DirectX::XMFLOAT3X3 & _matrix)
 		{
 			return *this * DirectX::XMLoadFloat3x3(&_matrix);
 		}
@@ -2038,6 +2084,39 @@ namespace DM
 			return nor;
 		}
 
+		Vec3i Cross(const DirectX::XMVECTOR & vector)
+		{
+			Vec3f fVal = AsXmFloat3();
+			return fVal.Cross(vector).Round().AsXmInt3();
+		}
+
+		Vec3i Cross(const Vec3i & _Vec3i)
+		{
+			Vec3f fVal = AsXmFloat3();
+			return fVal.Cross(_Vec3i.AsXmFloat3()).Round().AsXmInt3();
+		}
+
+		Vec3i Cross(const DirectX::XMINT3 & _xmInt)
+		{
+			Vec3f fVal = AsXmFloat3();
+			return fVal.Cross(DirectX::XMLoadSInt3(&_xmInt)).Round().AsXmInt3();
+		}
+
+		float Dot(const DirectX::XMVECTOR & vector)
+		{
+			return DirectX::XMVectorGetX(DirectX::XMVector3Dot(Load(), vector));
+		}
+
+		float Dot(const Vec3i & _Vec3i)
+		{
+			return DirectX::XMVectorGetX(DirectX::XMVector3Dot(Load(), _Vec3i.Load()));
+		}
+
+		float Dot(const DirectX::XMINT3 & _xmInt)
+		{
+			return DirectX::XMVectorGetX(DirectX::XMVector3Dot(Load(), DirectX::XMLoadSInt3(&_xmInt)));
+		}
+
 		float Length() const
 		{
 			return DirectX::XMVectorGetX(DirectX::XMVector3Length(Load()));
@@ -2076,9 +2155,9 @@ namespace DM
 			vec.z = _w;
 		}
 
-		Vec4i(const DirectX::XMINT4 & _xmFlt)
+		Vec4i(const DirectX::XMINT4 & _xmInt)
 		{
-			vec = _xmFlt;
+			vec = _xmInt;
 		}
 
 		Vec4i(const Vec4i & _vec2)
@@ -2100,9 +2179,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec4i & operator=(const DirectX::XMINT4 & _xmFlt)
+		Vec4i & operator=(const DirectX::XMINT4 & _xmInt)
 		{
-			vec = _xmFlt;
+			vec = _xmInt;
 
 			return *this;
 		}
@@ -2152,11 +2231,11 @@ namespace DM
 			return sum;
 		}
 
-		Vec4i operator+(const DirectX::XMINT4 & _xmFlt) const
+		Vec4i operator+(const DirectX::XMINT4 & _xmInt) const
 		{
 			Vec4i sum;
 
-			sum.Store(DirectX::XMVectorAdd(Load(), DirectX::XMLoadSInt4(&_xmFlt)));
+			sum.Store(DirectX::XMVectorAdd(Load(), DirectX::XMLoadSInt4(&_xmInt)));
 
 			return sum;
 		}
@@ -2170,11 +2249,11 @@ namespace DM
 			return sum;
 		}
 
-		Vec4i operator-(const DirectX::XMINT4 & _xmFlt) const
+		Vec4i operator-(const DirectX::XMINT4 & _xmInt) const
 		{
 			Vec4i sum;
 
-			sum.Store(DirectX::XMVectorSubtract(Load(), DirectX::XMLoadSInt4(&_xmFlt)));
+			sum.Store(DirectX::XMVectorSubtract(Load(), DirectX::XMLoadSInt4(&_xmInt)));
 
 			return sum;
 		}
@@ -2188,7 +2267,7 @@ namespace DM
 			return product;
 		}
 
-		Vec4i operator*(const DirectX::XMINT4 & _xmFlt) const
+		Vec4i operator*(const DirectX::XMINT4 & _xmInt) const
 		{
 			Vec4i product;
 
@@ -2206,7 +2285,7 @@ namespace DM
 			return product;
 		}
 
-		Vec4i operator/(const DirectX::XMINT4 & _xmFlt) const
+		Vec4i operator/(const DirectX::XMINT4 & _xmInt) const
 		{
 			Vec4i product;
 
@@ -2222,9 +2301,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec4i & operator+=(const DirectX::XMINT4 & _xmFlt)
+		Vec4i & operator+=(const DirectX::XMINT4 & _xmInt)
 		{
-			*this = *this + _xmFlt;
+			*this = *this + _xmInt;
 
 			return *this;
 		}
@@ -2243,9 +2322,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec4i & operator-=(const DirectX::XMINT4 & _xmFlt)
+		Vec4i & operator-=(const DirectX::XMINT4 & _xmInt)
 		{
-			*this = *this - _xmFlt;
+			*this = *this - _xmInt;
 
 			return *this;
 		}
@@ -2264,9 +2343,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec4i & operator*=(const DirectX::XMINT4 & _xmFlt)
+		Vec4i & operator*=(const DirectX::XMINT4 & _xmInt)
 		{
-			*this = *this * _xmFlt;
+			*this = *this * _xmInt;
 
 			return *this;
 		}
@@ -2285,9 +2364,9 @@ namespace DM
 			return *this;
 		}
 
-		Vec4i & operator/=(const DirectX::XMINT4 & _xmFlt)
+		Vec4i & operator/=(const DirectX::XMINT4 & _xmInt)
 		{
-			*this = *this / _xmFlt;
+			*this = *this / _xmInt;
 
 			return *this;
 		}
@@ -2304,9 +2383,9 @@ namespace DM
 			return x == _Vec4i.x && y == _Vec4i.y;
 		}
 
-		bool operator==(const DirectX::XMINT4 & _xmFlt) const
+		bool operator==(const DirectX::XMINT4 & _xmInt) const
 		{
-			return x == _xmFlt.x && y == _xmFlt.y;
+			return x == _xmInt.x && y == _xmInt.y;
 		}
 
 		bool operator==(const DirectX::XMVECTOR & _xmVec) const
@@ -2322,21 +2401,23 @@ namespace DM
 #pragma endregion
 
 #pragma region Matrix Operators
-		Vec4f operator*(const DirectX::XMMATRIX & _matrix)
+		Vec4i operator*(const DirectX::XMMATRIX & _matrix)
 		{
 			Vec4f val;
-
+			Vec4i iVal;
 			val.Store(DirectX::XMVector2Transform(Load(), _matrix));
 
-			return val;
+			iVal = val.Round().AsXmInt4();
+
+			return iVal;
 		}
 
-		Vec4f operator*(const DirectX::XMFLOAT4X4 & _matrix)
+		Vec4i operator*(const DirectX::XMFLOAT4X4 & _matrix)
 		{
 			return *this * DirectX::XMLoadFloat4x4(&_matrix);
 		}
 
-		Vec4f operator*(const DirectX::XMFLOAT3X3 & _matrix)
+		Vec4i operator*(const DirectX::XMFLOAT3X3 & _matrix)
 		{
 			return *this * DirectX::XMLoadFloat3x3(&_matrix);
 		}
@@ -2412,13 +2493,53 @@ namespace DM
 			return Vec4i(abs(x), abs(y));
 		}
 
-		Vec3f Normalize() const
+		Vec4f Normalize(bool ignoreW = false) const
 		{
-			Vec3f nor;
+			Vec4f nor;
 
-			nor.Store(DirectX::XMVector4Normalize(Load()));
+			if (!ignoreW)
+				nor.Store(DirectX::XMVector4Normalize(Load()));
+			else
+			{
+				float _w = w;
+				nor.Store(DirectX::XMVector3Normalize(Load()));
+				nor.w = _w;
+			}
 
 			return nor;
+		}
+
+		Vec4i Cross(const DirectX::XMVECTOR & vector)
+		{
+			Vec3f fVal = AsXmFloat3();
+			return fVal.Cross(vector).Round().AsXmInt4();
+		}
+
+		Vec4i Cross(const Vec4i & _Vec3i)
+		{
+			Vec3f fVal = AsXmFloat3();
+			return fVal.Cross(_Vec3i.AsXmFloat3()).Round().AsXmInt4();
+		}
+
+		Vec4i Cross(const DirectX::XMINT4 & _xmInt)
+		{
+			Vec3f fVal = AsXmFloat3();
+			return fVal.Cross(DirectX::XMLoadSInt4(&_xmInt)).Round().AsXmInt4();
+		}
+
+		float Dot(const DirectX::XMVECTOR & vector)
+		{
+			return DirectX::XMVectorGetX(DirectX::XMVector3Dot(Load(), vector));
+		}
+
+		float Dot(const Vec4i & _Vec4i)
+		{
+			return DirectX::XMVectorGetX(DirectX::XMVector3Dot(Load(), _Vec4i.Load()));
+		}
+
+		float Dot(const DirectX::XMINT4 & _xmInt)
+		{
+			return DirectX::XMVectorGetX(DirectX::XMVector3Dot(Load(), DirectX::XMLoadSInt4(&_xmInt)));
 		}
 
 		float Length() const
