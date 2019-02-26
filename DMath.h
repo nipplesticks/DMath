@@ -3,7 +3,144 @@
 #include <string>
 namespace DM
 {
-	// TODO :: Cross and Dot for Integer vectors
+	struct Mat3x3
+	{
+	public:
+#pragma region Constructors
+		Mat3x3()
+		{
+			m_mat = {};
+		}
+		Mat3x3(const DirectX::XMFLOAT3X3 & _mat)
+		{
+			m_mat = _mat;
+		}
+		Mat3x3(const Mat3x3 & _mat)
+		{
+			m_mat = _mat.m_mat;
+		}
+#pragma endregion
+
+#pragma region Mat Operators
+
+#pragma endregion
+
+#pragma region Functions
+
+		DirectX::XMMATRIX Load() const
+		{
+			return DirectX::XMLoadFloat3x3(&m_mat);
+		}
+
+		void Store(const DirectX::XMMATRIX & _mat)
+		{
+			DirectX::XMStoreFloat3x3(&m_mat, _mat);
+		}
+
+		std::string ToString() const
+		{
+			std::string str = "";
+
+			for (size_t y = 0; y < 3; y++)
+			{
+				for (size_t x = 0; x < 3; x++)
+				{
+					str += "[" + std::to_string(x + 1) + std::to_string(y + 1) + "]: " + std::to_string(m_mat(x, y)) + ", ";
+				}
+				str.pop_back();
+				str[str.size() - 1] = '\n';
+			}
+
+
+			return str;
+		}
+
+#pragma endregion
+
+		float & _11 = m_mat._11;
+		float & _12 = m_mat._12;
+		float & _13 = m_mat._13;
+
+		float & _21 = m_mat._21;
+		float & _22 = m_mat._22;
+		float & _23 = m_mat._23;
+
+		float & _31 = m_mat._31;
+		float & _32 = m_mat._32;
+		float & _33 = m_mat._33;
+
+	private:
+		DirectX::XMFLOAT3X3 m_mat;
+
+	};
+
+	struct Mat4x4
+	{
+	public:
+#pragma region Constructors
+		Mat4x4()
+		{
+			m_mat = {};
+		}
+		Mat4x4(const DirectX::XMFLOAT4X4 & _mat)
+		{
+			m_mat = _mat;
+		}
+		Mat4x4(const Mat4x4 & _mat)
+		{
+			m_mat = _mat.m_mat;
+		}
+#pragma endregion
+
+#pragma region Mat Operators
+
+#pragma endregion
+
+#pragma region Functions
+
+		std::string ToString() const
+		{
+			std::string str = "";
+
+			for (size_t y = 0; y < 4; y++)
+			{
+				for (size_t x = 0; x < 4; x++)
+				{
+					str += "[" + std::to_string(x + 1) + std::to_string(y + 1) + "]: " + std::to_string(m_mat(x, y)) + ", ";
+				}
+				str.pop_back();
+				str[str.size() - 1] = '\n';
+			}
+
+
+			return str;
+		}
+
+#pragma endregion
+
+		float & _11 = m_mat._11;
+		float & _12 = m_mat._12;
+		float & _13 = m_mat._13;
+		float & _14 = m_mat._14;
+
+		float & _21 = m_mat._21;
+		float & _22 = m_mat._22;
+		float & _23 = m_mat._23;
+		float & _24 = m_mat._24;
+
+		float & _31 = m_mat._31;
+		float & _32 = m_mat._32;
+		float & _33 = m_mat._33;
+		float & _34 = m_mat._34;
+
+		float & _41 = m_mat._41;
+		float & _42 = m_mat._42;
+		float & _43 = m_mat._43;
+		float & _44 = m_mat._44;
+
+	private:
+		DirectX::XMFLOAT4X4 m_mat;
+	};
 
 
 	struct Vec2f
@@ -12,18 +149,18 @@ namespace DM
 #pragma region Constructors
 		Vec2f(float _x = 0.0f, float _y = 0.0f)
 		{
-			vec.x = _x;
-			vec.y = _y;
+			m_vec.x = _x;
+			m_vec.y = _y;
 		}
 
 		Vec2f(const DirectX::XMFLOAT2 & _xmFlt)
 		{
-			vec = _xmFlt;
+			m_vec = _xmFlt;
 		}
 
 		Vec2f(const Vec2f & _vec2)
 		{
-			vec = _vec2.vec;
+			m_vec = _vec2.m_vec;
 		}
 		
 #pragma endregion
@@ -34,7 +171,7 @@ namespace DM
 		{
 			if (this != &_vec2f)
 			{
-				vec = _vec2f.vec;
+				m_vec = _vec2f.m_vec;
 			}
 
 			return *this;
@@ -42,7 +179,7 @@ namespace DM
 
 		Vec2f & operator=(const DirectX::XMFLOAT2 & _xmFlt)
 		{
-			vec = _xmFlt;
+			m_vec = _xmFlt;
 			
 			return *this;
 		}
@@ -132,7 +269,7 @@ namespace DM
 		{
 			Vec2f product;
 
-			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadFloat2(&vec)));
+			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadFloat2(&m_vec)));
 
 			return product;
 		}
@@ -150,7 +287,7 @@ namespace DM
 		{
 			Vec2f product;
 
-			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadFloat2(&vec)));
+			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadFloat2(&m_vec)));
 
 			return product;
 		}
@@ -293,17 +430,17 @@ namespace DM
 		
 		DirectX::XMVECTOR Load() const
 		{
-			return DirectX::XMLoadFloat2(&vec);
+			return DirectX::XMLoadFloat2(&m_vec);
 		}
 		
 		void Store(const DirectX::XMVECTOR & vector)
 		{
-			DirectX::XMStoreFloat2(&vec, vector);
+			DirectX::XMStoreFloat2(&m_vec, vector);
 		}
 
 		const DirectX::XMFLOAT2 & AsXmFloat2() const
 		{
-			return vec;
+			return m_vec;
 		}
 
 		DirectX::XMFLOAT3 AsXmFloat3() const
@@ -431,11 +568,11 @@ namespace DM
 		}
 #pragma endregion
 
-		float &	x = vec.x;
-		float & y = vec.y;
+		float &	x = m_vec.x;
+		float & y = m_vec.y;
 
 	private:
-		DirectX::XMFLOAT2 vec;
+		DirectX::XMFLOAT2 m_vec;
 	};
 
 	struct Vec3f
@@ -444,19 +581,19 @@ namespace DM
 #pragma region Constructors
 		Vec3f(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f)
 		{
-			vec.x = _x;
-			vec.y = _y;
-			vec.z = _z;
+			m_vec.x = _x;
+			m_vec.y = _y;
+			m_vec.z = _z;
 		}
 
 		Vec3f(const DirectX::XMFLOAT3 & _xmFlt)
 		{
-			vec = _xmFlt;
+			m_vec = _xmFlt;
 		}
 
 		Vec3f(const Vec3f & _vec3)
 		{
-			vec = _vec3.vec;
+			m_vec = _vec3.m_vec;
 		}
 
 #pragma endregion
@@ -467,7 +604,7 @@ namespace DM
 		{
 			if (this != &_Vec3f)
 			{
-				vec = _Vec3f.vec;
+				m_vec = _Vec3f.m_vec;
 			}
 
 			return *this;
@@ -475,7 +612,7 @@ namespace DM
 
 		Vec3f & operator=(const DirectX::XMFLOAT3 & _xmFlt)
 		{
-			vec = _xmFlt;
+			m_vec = _xmFlt;
 
 			return *this;
 		}
@@ -565,7 +702,7 @@ namespace DM
 		{
 			Vec3f product;
 
-			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadFloat3(&vec)));
+			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadFloat3(&m_vec)));
 
 			return product;
 		}
@@ -583,7 +720,7 @@ namespace DM
 		{
 			Vec3f product;
 
-			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadFloat3(&vec)));
+			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadFloat3(&m_vec)));
 
 			return product;
 		}
@@ -726,12 +863,12 @@ namespace DM
 
 		DirectX::XMVECTOR Load() const
 		{
-			return DirectX::XMLoadFloat3(&vec);
+			return DirectX::XMLoadFloat3(&m_vec);
 		}
 
 		void Store(const DirectX::XMVECTOR & vector)
 		{
-			DirectX::XMStoreFloat3(&vec, vector);
+			DirectX::XMStoreFloat3(&m_vec, vector);
 		}
 
 		DirectX::XMFLOAT2 AsXmFloat2() const
@@ -745,7 +882,7 @@ namespace DM
 
 		const DirectX::XMFLOAT3 & AsXmFloat3() const
 		{
-			return vec;
+			return m_vec;
 		}
 
 		DirectX::XMFLOAT4 AsXmFloat4() const
@@ -863,12 +1000,12 @@ namespace DM
 		}
 #pragma endregion
 
-		float &	x = vec.x;
-		float & y = vec.y;
-		float & z = vec.z;
+		float &	x = m_vec.x;
+		float & y = m_vec.y;
+		float & z = m_vec.z;
 
 	private:
-		DirectX::XMFLOAT3 vec;
+		DirectX::XMFLOAT3 m_vec;
 
 	};
 
@@ -878,20 +1015,20 @@ namespace DM
 #pragma region Constructors
 		Vec4f(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f, float _w = 0.0f)
 		{
-			vec.x = _x;
-			vec.y = _y;
-			vec.z = _z;
-			vec.w = _w;
+			m_vec.x = _x;
+			m_vec.y = _y;
+			m_vec.z = _z;
+			m_vec.w = _w;
 		}
 
 		Vec4f(const DirectX::XMFLOAT4 & _xmFlt)
 		{
-			vec = _xmFlt;
+			m_vec = _xmFlt;
 		}
 
 		Vec4f(const Vec4f & _vec4)
 		{
-			vec = _vec4.vec;
+			m_vec = _vec4.m_vec;
 		}
 
 #pragma endregion
@@ -902,7 +1039,7 @@ namespace DM
 		{
 			if (this != &_Vec4f)
 			{
-				vec = _Vec4f.vec;
+				m_vec = _Vec4f.m_vec;
 			}
 
 			return *this;
@@ -910,7 +1047,7 @@ namespace DM
 
 		Vec4f & operator=(const DirectX::XMFLOAT4 & _xmFlt)
 		{
-			vec = _xmFlt;
+			m_vec = _xmFlt;
 
 			return *this;
 		}
@@ -1000,7 +1137,7 @@ namespace DM
 		{
 			Vec4f product;
 
-			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadFloat4(&vec)));
+			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadFloat4(&m_vec)));
 
 			return product;
 		}
@@ -1018,7 +1155,7 @@ namespace DM
 		{
 			Vec4f product;
 
-			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadFloat4(&vec)));
+			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadFloat4(&m_vec)));
 
 			return product;
 		}
@@ -1161,12 +1298,12 @@ namespace DM
 
 		DirectX::XMVECTOR Load() const
 		{
-			return DirectX::XMLoadFloat4(&vec);
+			return DirectX::XMLoadFloat4(&m_vec);
 		}
 
 		void Store(const DirectX::XMVECTOR & vector)
 		{
-			DirectX::XMStoreFloat4(&vec, vector);
+			DirectX::XMStoreFloat4(&m_vec, vector);
 		}
 
 		DirectX::XMFLOAT2 AsXmFloat2() const
@@ -1190,7 +1327,7 @@ namespace DM
 
 		const DirectX::XMFLOAT4 & AsXmFloat4() const
 		{
-			return vec;
+			return m_vec;
 		}
 
 		DirectX::XMINT2 AsXmInt2() const
@@ -1298,13 +1435,13 @@ namespace DM
 #pragma endregion
 
 
-		float &	x = vec.x;
-		float & y = vec.y;
-		float & z = vec.z;
-		float & w = vec.w;
+		float &	x = m_vec.x;
+		float & y = m_vec.y;
+		float & z = m_vec.z;
+		float & w = m_vec.w;
 
 	private:
-		DirectX::XMFLOAT4 vec;
+		DirectX::XMFLOAT4 m_vec;
 	};
 
 	struct Vec2i
@@ -1313,18 +1450,18 @@ namespace DM
 #pragma region Constructors
 		Vec2i(int _x = 0, int _y = 0)
 		{
-			vec.x = _x;
-			vec.y = _y;
+			m_vec.x = _x;
+			m_vec.y = _y;
 		}
 
 		Vec2i(const DirectX::XMINT2 & _xmInt)
 		{
-			vec = _xmInt;
+			m_vec = _xmInt;
 		}
 
 		Vec2i(const Vec2i & _vec2)
 		{
-			vec = _vec2.vec;
+			m_vec = _vec2.m_vec;
 		}
 
 #pragma endregion
@@ -1335,7 +1472,7 @@ namespace DM
 		{
 			if (this != &_Vec2i)
 			{
-				vec = _Vec2i.vec;
+				m_vec = _Vec2i.m_vec;
 			}
 
 			return *this;
@@ -1343,7 +1480,7 @@ namespace DM
 
 		Vec2i & operator=(const DirectX::XMINT2 & _xmInt)
 		{
-			vec = _xmInt;
+			m_vec = _xmInt;
 
 			return *this;
 		}
@@ -1433,7 +1570,7 @@ namespace DM
 		{
 			Vec2i product;
 
-			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadSInt2(&vec)));
+			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadSInt2(&m_vec)));
 
 			return product;
 		}
@@ -1451,7 +1588,7 @@ namespace DM
 		{
 			Vec2i product;
 
-			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadSInt2(&vec)));
+			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadSInt2(&m_vec)));
 
 			return product;
 		}
@@ -1590,12 +1727,12 @@ namespace DM
 
 		DirectX::XMVECTOR Load() const
 		{
-			return DirectX::XMLoadSInt2(&vec);
+			return DirectX::XMLoadSInt2(&m_vec);
 		}
 
 		void Store(const DirectX::XMVECTOR & vector)
 		{
-			DirectX::XMStoreSInt2(&vec, vector);
+			DirectX::XMStoreSInt2(&m_vec, vector);
 		}
 
 		DirectX::XMFLOAT2 AsXmFloat2() const
@@ -1629,7 +1766,7 @@ namespace DM
 
 		const DirectX::XMINT2 & AsXmInt2() const
 		{
-			return vec;
+			return m_vec;
 		}
 
 		DirectX::XMINT3 AsXmInt3() const
@@ -1717,11 +1854,11 @@ namespace DM
 		}
 #pragma endregion
 
-		int & x = vec.x;
-		int & y = vec.y;
+		int & x = m_vec.x;
+		int & y = m_vec.y;
 
 	private:
-		DirectX::XMINT2 vec;
+		DirectX::XMINT2 m_vec;
 	};
 
 	struct Vec3i
@@ -1730,19 +1867,19 @@ namespace DM
 #pragma region Constructors
 		Vec3i(int _x = 0, int _y = 0, int _z = 0)
 		{
-			vec.x = _x;
-			vec.y = _y;
-			vec.z = _z;
+			m_vec.x = _x;
+			m_vec.y = _y;
+			m_vec.z = _z;
 		}
 
 		Vec3i(const DirectX::XMINT3 & _xmInt)
 		{
-			vec = _xmInt;
+			m_vec = _xmInt;
 		}
 
 		Vec3i(const Vec3i & _vec2)
 		{
-			vec = _vec2.vec;
+			m_vec = _vec2.m_vec;
 		}
 
 #pragma endregion
@@ -1753,7 +1890,7 @@ namespace DM
 		{
 			if (this != &_Vec3i)
 			{
-				vec = _Vec3i.vec;
+				m_vec = _Vec3i.m_vec;
 			}
 
 			return *this;
@@ -1761,7 +1898,7 @@ namespace DM
 
 		Vec3i & operator=(const DirectX::XMINT3 & _xmInt)
 		{
-			vec = _xmInt;
+			m_vec = _xmInt;
 
 			return *this;
 		}
@@ -1851,7 +1988,7 @@ namespace DM
 		{
 			Vec3i product;
 
-			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadSInt3(&vec)));
+			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadSInt3(&m_vec)));
 
 			return product;
 		}
@@ -1869,7 +2006,7 @@ namespace DM
 		{
 			Vec3i product;
 
-			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadSInt3(&vec)));
+			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadSInt3(&m_vec)));
 
 			return product;
 		}
@@ -2008,12 +2145,12 @@ namespace DM
 
 		DirectX::XMVECTOR Load() const
 		{
-			return DirectX::XMLoadSInt3(&vec);
+			return DirectX::XMLoadSInt3(&m_vec);
 		}
 
 		void Store(const DirectX::XMVECTOR & vector)
 		{
-			DirectX::XMStoreSInt3(&vec, vector);
+			DirectX::XMStoreSInt3(&m_vec, vector);
 		}
 
 		DirectX::XMFLOAT2 AsXmFloat2() const
@@ -2056,7 +2193,7 @@ namespace DM
 
 		const DirectX::XMINT3 & AsXmInt3() const
 		{
-			return vec;
+			return m_vec;
 		}
 
 		DirectX::XMINT4 AsXmInt4() const
@@ -2134,12 +2271,12 @@ namespace DM
 		}
 #pragma endregion
 
-		int & x = vec.x;
-		int & y = vec.y;
-		int & z = vec.z;
+		int & x = m_vec.x;
+		int & y = m_vec.y;
+		int & z = m_vec.z;
 
 	private:
-		DirectX::XMINT3 vec;
+		DirectX::XMINT3 m_vec;
 
 	};
 
@@ -2149,20 +2286,20 @@ namespace DM
 #pragma region Constructors
 		Vec4i(int _x = 0, int _y = 0, int _z = 0, int _w = 0)
 		{
-			vec.x = _x;
-			vec.y = _y;
-			vec.z = _z;
-			vec.z = _w;
+			m_vec.x = _x;
+			m_vec.y = _y;
+			m_vec.z = _z;
+			m_vec.z = _w;
 		}
 
 		Vec4i(const DirectX::XMINT4 & _xmInt)
 		{
-			vec = _xmInt;
+			m_vec = _xmInt;
 		}
 
 		Vec4i(const Vec4i & _vec2)
 		{
-			vec = _vec2.vec;
+			m_vec = _vec2.m_vec;
 		}
 
 #pragma endregion
@@ -2173,7 +2310,7 @@ namespace DM
 		{
 			if (this != &_Vec4i)
 			{
-				vec = _Vec4i.vec;
+				m_vec = _Vec4i.m_vec;
 			}
 
 			return *this;
@@ -2181,7 +2318,7 @@ namespace DM
 
 		Vec4i & operator=(const DirectX::XMINT4 & _xmInt)
 		{
-			vec = _xmInt;
+			m_vec = _xmInt;
 
 			return *this;
 		}
@@ -2271,7 +2408,7 @@ namespace DM
 		{
 			Vec4i product;
 
-			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadSInt4(&vec)));
+			product.Store(DirectX::XMVectorMultiply(Load(), DirectX::XMLoadSInt4(&m_vec)));
 
 			return product;
 		}
@@ -2289,7 +2426,7 @@ namespace DM
 		{
 			Vec4i product;
 
-			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadSInt4(&vec)));
+			product.Store(DirectX::XMVectorDivide(Load(), DirectX::XMLoadSInt4(&m_vec)));
 
 			return product;
 		}
@@ -2427,12 +2564,12 @@ namespace DM
 
 		DirectX::XMVECTOR Load() const
 		{
-			return DirectX::XMLoadSInt4(&vec);
+			return DirectX::XMLoadSInt4(&m_vec);
 		}
 
 		void Store(const DirectX::XMVECTOR & vector)
 		{
-			DirectX::XMStoreSInt4(&vec, vector);
+			DirectX::XMStoreSInt4(&m_vec, vector);
 		}
 
 		DirectX::XMFLOAT2 AsXmFloat2() const
@@ -2485,7 +2622,7 @@ namespace DM
 
 		const DirectX::XMINT4 & AsXmInt4() const
 		{
-			return vec;
+			return m_vec;
 		}
 
 		Vec4i Abs() const
@@ -2558,13 +2695,13 @@ namespace DM
 			return str;
 		}
 #pragma endregion
-		int & x = vec.x;
-		int & y = vec.y;
-		int & z = vec.z;
-		int & w = vec.w;
+		int & x = m_vec.x;
+		int & y = m_vec.y;
+		int & z = m_vec.z;
+		int & w = m_vec.w;
 
 	private:
-		DirectX::XMINT4 vec;
+		DirectX::XMINT4 m_vec;
 	};
 
 }
