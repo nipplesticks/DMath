@@ -9,7 +9,7 @@ namespace DM
 #pragma region Constructors
 		Mat3x3()
 		{
-			m_mat = {};
+			Store(DirectX::XMMatrixIdentity());
 		}
 		Mat3x3(const DirectX::XMFLOAT3X3 & _mat)
 		{
@@ -22,7 +22,50 @@ namespace DM
 #pragma endregion
 
 #pragma region Mat Operators
+		Mat3x3 & operator=(const Mat3x3 & other)
+		{
+			if (this != &other)
+			{
+				m_mat = other.m_mat;
+			}
 
+			return *this;
+		}
+		Mat3x3 & operator=(const DirectX::XMFLOAT3X3 & other)
+		{
+			m_mat = other;
+
+			return *this;
+		}
+		Mat3x3 operator*(const Mat3x3 & other)
+		{
+			Mat3x3 val;
+
+			val.Store(DirectX::XMMatrixMultiply(Load(), other.Load()));
+
+			return val;
+		}
+		Mat3x3 operator*(const const DirectX::XMFLOAT3X3 & other)
+		{
+			Mat3x3 val;
+
+			val.Store(DirectX::XMMatrixMultiply(Load(), DirectX::XMLoadFloat3x3(&other)));
+
+			return val;
+		}
+		Mat3x3 & operator*=(const Mat3x3 & other)
+		{
+			*this = *this * other;
+
+
+			return *this;
+		}
+		Mat3x3 & operator*=(const DirectX::XMFLOAT3X3 & other)
+		{
+			*this = *this * other;
+
+			return *this;
+		}
 #pragma endregion
 
 #pragma region Functions
@@ -35,6 +78,29 @@ namespace DM
 		void Store(const DirectX::XMMATRIX & _mat)
 		{
 			DirectX::XMStoreFloat3x3(&m_mat, _mat);
+		}
+
+		Mat3x3 Inverse()
+		{
+			Mat3x3 val;
+
+			val.Store(DirectX::XMMatrixInverse(nullptr, Load()));
+
+			return val;
+		}
+
+		Mat3x3 Transpose()
+		{
+			Mat3x3 val;
+
+			val.Store(DirectX::XMMatrixTranspose(Load()));
+
+			return val;
+		}
+
+		const DirectX::XMFLOAT3X3 & AsXmFloat3x3()
+		{
+			return m_mat;
 		}
 
 		std::string ToString() const
@@ -80,7 +146,7 @@ namespace DM
 #pragma region Constructors
 		Mat4x4()
 		{
-			m_mat = {};
+			Store(DirectX::XMMatrixIdentity());
 		}
 		Mat4x4(const DirectX::XMFLOAT4X4 & _mat)
 		{
@@ -93,10 +159,86 @@ namespace DM
 #pragma endregion
 
 #pragma region Mat Operators
+		Mat4x4 & operator=(const Mat4x4 & other)
+		{
+			if (this != &other)
+			{
+				m_mat = other.m_mat;
+			}
 
+			return *this;
+		}
+		Mat4x4 & operator=(const DirectX::XMFLOAT4X4 & other)
+		{
+			m_mat = other;
+
+			return *this;
+		}
+		Mat4x4 operator*(const Mat4x4 & other)
+		{
+			Mat4x4 val;
+
+			val.Store(DirectX::XMMatrixMultiply(Load(), other.Load()));
+
+			return val;
+		}
+		Mat4x4 operator*(const const DirectX::XMFLOAT4X4 & other)
+		{
+			Mat4x4 val;
+
+			val.Store(DirectX::XMMatrixMultiply(Load(), DirectX::XMLoadFloat4x4(&other)));
+
+			return val;
+		}
+		Mat4x4 & operator*=(const Mat4x4 & other)
+		{
+			*this = *this * other;
+
+
+			return *this;
+		}
+		Mat4x4 & operator*=(const DirectX::XMFLOAT4X4 & other)
+		{
+			*this = *this * other;
+
+			return *this;
+		}
 #pragma endregion
 
 #pragma region Functions
+
+		DirectX::XMMATRIX Load() const
+		{
+			return DirectX::XMLoadFloat4x4(&m_mat);
+		}
+
+		void Store(const DirectX::XMMATRIX & _mat)
+		{
+			DirectX::XMStoreFloat4x4(&m_mat, _mat);
+		}
+
+		Mat4x4 Inverse()
+		{
+			Mat4x4 val;
+
+			val.Store(DirectX::XMMatrixInverse(nullptr, Load()));
+
+			return val;
+		}
+
+		Mat4x4 Transpose()
+		{
+			Mat4x4 val;
+
+			val.Store(DirectX::XMMatrixTranspose(Load()));
+
+			return val;
+		}
+
+		const DirectX::XMFLOAT4X4 & AsXmFloat4x4()
+		{
+			return m_mat;
+		}
 
 		std::string ToString() const
 		{
